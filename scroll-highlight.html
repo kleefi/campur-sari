@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scroll Translate3d Effect</title>
+    <style>
+      body {
+        height: 3000px; /* Sesuaikan agar cukup panjang untuk efek scroll */
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+      .content {
+        position: relative;
+        display: block;
+        height: 200px;
+        background: #f0f0f0;
+        overflow: hidden;
+        margin-bottom: 50px; /* Jarak antar div */
+      }
+      .mask {
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 115%;
+        transform-origin: 100% 50%;
+        transform: translateZ(0);
+        opacity: 0.65;
+        background: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="height: 200px"></div>
+    <div style="width: 800px; margin: 20px auto">
+      <span class="content">
+        <span style="font-size: 80px">Div 1: Lorem ipsum dolor sit amet!</span>
+        <span class="mask" style="transform: translate3d(0%, 0px, 0px)"></span>
+      </span>
+    </div>
+    <div style="width: 800px; margin: 20px auto">
+      <span class="content">
+        <span style="font-size: 80px">Div 2: Lorem ipsum dolor sit amet!</span>
+        <span class="mask" style="transform: translate3d(0%, 0px, 0px)"></span>
+      </span>
+    </div>
+    <div style="width: 800px; margin: 20px auto">
+      <span class="content">
+        <span style="font-size: 80px">Div 3: Lorem ipsum dolor sit amet!</span>
+        <span class="mask" style="transform: translate3d(0%, 0px, 0px)"></span>
+      </span>
+    </div>
+    <div style="width: 800px; margin: 20px auto">
+      <span class="content">
+        <span style="font-size: 80px">Div 4: Lorem ipsum dolor sit amet!</span>
+        <span class="mask" style="transform: translate3d(0%, 0px, 0px)"></span>
+      </span>
+    </div>
+
+    <div style="width: 800px; margin: 20px auto">
+      <span class="content">
+        <span style="font-size: 80px">Div 5: Lorem ipsum dolor sit amet!</span>
+        <span class="mask" style="transform: translate3d(0%, 0px, 0px)"></span>
+      </span>
+    </div>
+
+    <script>
+      window.addEventListener("scroll", () => {
+        const scrollY = window.scrollY;
+        const divs = document.querySelectorAll(".content");
+        const masks = document.querySelectorAll(".mask");
+
+        // Faktor untuk transform
+        const factor = 0.5;
+        let totalDivs = divs.length;
+
+        divs.forEach((div, index) => {
+          const mask = masks[index];
+          const contentWidth = div.offsetWidth;
+          const percentScroll = scrollY * factor;
+
+          if (index === 0) {
+            mask.style.transform = `translate3d(${Math.min(
+              percentScroll,
+              100
+            )}%, 0px, 0px)`;
+          } else {
+            const previousDivMaxScroll = index * 100;
+            const currentDivStartScroll = previousDivMaxScroll;
+            const currentDivMaxScroll = currentDivStartScroll + 100;
+
+            if (percentScroll > currentDivStartScroll) {
+              const additionalScroll = Math.min(
+                percentScroll - currentDivStartScroll,
+                100
+              );
+              mask.style.transform = `translate3d(${additionalScroll}%, 0px, 0px)`;
+            } else {
+              mask.style.transform = `translate3d(0%, 0px, 0px)`;
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
